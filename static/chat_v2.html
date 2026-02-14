@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnalystSage AI - Interactive Intelligence Chat</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8B5CF6",
+                        "background-light": "#F5F3FF",
+                        "background-dark": "#0B0E14",
+                        accent: {
+                            pink: "#EC4899",
+                            cyan: "#06B6D4",
+                            yellow: "#FBBF24"
+                        }
+                    },
+                    fontFamily: {
+                        display: ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1.5rem",
+                        "2xl": "2rem",
+                        "3xl": "3rem",
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+        }
+
+        .chat-container:hover::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+        }
+
+        .ai-bubble {
+            border-bottom-left-radius: 4px;
+        }
+
+        .user-bubble {
+            border-bottom-right-radius: 4px;
+        }
+
+        @keyframes typing {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .typing-dot {
+            animation: typing 1s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen overflow-hidden transition-colors duration-500">
+    <div
+        class="fixed inset-0 -z-10 bg-gradient-to-br from-purple-100 via-pink-50 to-cyan-100 dark:from-indigo-950 dark:via-purple-950 dark:to-slate-950 animate-gradient-x">
+    </div>
+
+    <div class="flex h-full w-full">
+        <!-- Sidebar -->
+        <aside class="w-80 hidden lg:flex flex-col border-r border-white/20 dark:border-slate-800/50 glass">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8 cursor-pointer"
+                    onclick="window.location.href='/analyst_sage_v2.html'">
+                    <div
+                        class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
+                        <span class="material-icons-round text-white">auto_awesome</span>
+                    </div>
+                    <div>
+                        <h1
+                            class="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white uppercase transition-colors">
+                            AnalystSage <span class="text-primary lowercase tracking-tighter">AI</span></h1>
+                        <p class="text-[8px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em]">
+                            Knowledge Workspace</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Active Sources
+                        </h3>
+                        <div id="sources-list" class="space-y-2">
+                            <!-- Sources will be injected here -->
+                            <div
+                                class="animate-pulse flex items-center gap-3 p-3 rounded-2xl bg-white/30 dark:bg-white/5 border border-white/10">
+                                <div class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700"></div>
+                                <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded w-24"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto p-6 border-t border-white/20 dark:border-slate-800/50">
+                <button onclick="document.getElementById('archive-upload-input').click()"
+                    class="w-full flex items-center justify-center gap-2 p-4 bg-primary text-white rounded-2xl font-bold text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    <span class="material-icons-round">add_circle</span>
+                    Add Archive
+                </button>
+                <input type="file" id="archive-upload-input" multiple class="hidden" onchange="handleArchiveUpload()">
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="flex-1 flex flex-col relative h-full overflow-hidden">
+            <!-- Page Header -->
+            <header
+                class="p-6 border-b border-white/20 dark:border-slate-800/50 glass flex items-center justify-between z-20">
+                <div class="flex items-center gap-4">
+                    <!-- Mobile Logo (visible only on small screens) -->
+                    <div class="lg:hidden flex items-center gap-3">
+                        <button onclick="window.location.href='/analyst_sage_v2.html'"
+                            class="p-2 hover:bg-white/50 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                            <span class="material-icons-round">arrow_back</span>
+                        </button>
+                        <h1 class="font-extrabold text-slate-900 dark:text-white">AnalystSage <span
+                                class="text-primary lowercase">AI</span></h1>
+                    </div>
+
+                    <!-- View Title (visible on desktop) -->
+                    <div class="hidden lg:flex items-center gap-2">
+                        <span class="material-icons-round text-primary">forum</span>
+                        <h2 class="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Intelligence Chat</h2>
+                    </div>
+                </div>
+
+                <!-- Navigation Pill -->
+                <nav
+                    class="flex glass px-5 py-2.5 rounded-full items-center gap-4 shadow-xl border border-white/20 transition-all">
+                    <button
+                        class="p-2.5 bg-primary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 shadow-lg shadow-primary/30"
+                        onclick="window.location.href='/chat_v2.html'" title="Ask Questions">
+                        <span class="material-icons-round text-sm">forum</span>
+                    </button>
+                    <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+                    <button
+                        class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                        onclick="window.location.href='/audit_v2.html'" title="Audit Contracts">
+                        <span class="material-icons-round text-sm">gavel</span>
+                    </button>
+                    <button
+                        class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                        onclick="window.location.href='/library_v2.html'" title="Document Library">
+                        <span class="material-icons-round text-sm">folder_special</span>
+                    </button>
+                    <button
+                        class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                        title="Settings">
+                        <span class="material-icons-round text-sm">settings</span>
+                    </button>
+                    <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+                    <button
+                        class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-accent-yellow transition-colors flex items-center justify-center"
+                        onclick="document.documentElement.classList.toggle('dark')">
+                        <span class="material-icons-round text-sm dark:hidden">dark_mode</span>
+                        <span class="material-icons-round text-sm hidden dark:block">light_mode</span>
+                    </button>
+                </nav>
+            </header>
+
+            <!-- Messages Window -->
+            <div id="chat-window" class="flex-1 overflow-y-auto chat-container p-6 lg:p-12 space-y-8">
+                <!-- Welcome Message -->
+                <div class="flex flex-col items-center justify-center py-20 text-center space-y-4 max-w-2xl mx-auto">
+                    <div class="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center text-primary mb-2">
+                        <span class="material-icons-round text-5xl">auto_awesome</span>
+                    </div>
+                    <h2 class="text-3xl font-extrabold tracking-tight">How can I help you today?</h2>
+                    <p class="text-slate-500 dark:text-slate-400 font-medium">Ask anything about your uploaded archives.
+                        I'll provide semantic insights and direct references.</p>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-6 lg:p-12 pt-0 w-full max-w-4xl mx-auto">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-primary via-accent-pink to-accent-cyan rounded-[2rem] blur opacity-25 group-focus-within:opacity-40 transition duration-1000">
+                    </div>
+                    <form id="chat-form"
+                        class="relative glass rounded-[2rem] p-2 flex items-center gap-2 border-white/40 shadow-2xl">
+                        <input id="chat-input" type="text" autocomplete="off"
+                            class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 dark:text-white placeholder-slate-400 text-lg font-bold px-6 py-4"
+                            placeholder="Type your message..." />
+                        <button type="submit" id="send-btn"
+                            class="w-14 h-14 bg-slate-900 dark:bg-primary text-white rounded-3xl flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all">
+                            <span class="material-icons-round text-2xl">rocket_launch</span>
+                        </button>
+                    </form>
+                </div>
+                <p class="text-[10px] text-center mt-4 font-black uppercase tracking-[0.3em] text-slate-400 opacity-50">
+                    AnalystSage AI • Powered by RAG Strategy
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const sourcesList = document.getElementById('sources-list');
+
+        // Check if there's an initial query from URL
+        window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            const initialQuery = params.get('q');
+            if (initialQuery) {
+                chatInput.value = initialQuery;
+                sendMessage(initialQuery);
+            }
+            loadSources();
+        });
+
+        async function loadSources() {
+            try {
+                const res = await fetch('/api/sources');
+                const data = await res.json();
+
+                sourcesList.innerHTML = '';
+                if (data.sources.length === 0) {
+                    sourcesList.innerHTML = '<p class="text-[10px] font-bold text-slate-500 text-center py-4 italic uppercase">No sources active</p>';
+                    return;
+                }
+
+                data.sources.forEach((source, i) => {
+                    const el = document.createElement('div');
+                    el.className = "flex items-center gap-3 p-3 rounded-2xl bg-white/30 dark:bg-white/5 border border-white/10 hover:border-primary/50 transition-all cursor-default group";
+                    el.innerHTML = `
+                        <div class="w-8 h-8 ${i % 2 === 0 ? 'bg-primary/20 text-primary' : 'bg-accent-cyan/20 text-accent-cyan'} rounded-lg flex items-center justify-center text-sm font-bold">
+                            <span class="material-icons-round text-lg">${i % 2 === 0 ? 'description' : 'history_edu'}</span>
+                        </div>
+                        <div class="flex-1 overflow-hidden">
+                            <p class="text-[10px] font-black uppercase text-slate-700 dark:text-slate-200 truncate tracking-tight">${source}</p>
+                            <p class="text-[8px] font-bold text-primary uppercase tracking-tighter">Ready</p>
+                        </div>
+                    `;
+                    sourcesList.appendChild(el);
+                });
+            } catch (err) {
+                console.error("Failed to load sources:", err);
+            }
+        }
+
+        async function handleArchiveUpload() {
+            const input = document.getElementById('archive-upload-input');
+            if (input.files.length === 0) return;
+
+            const formData = new FormData();
+            for (const file of input.files) {
+                formData.append('files', file);
+            }
+
+            try {
+                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                loadSources();
+            } catch (err) {
+                console.error("Upload failed:", err);
+            } finally {
+                input.value = '';
+            }
+        }
+
+        chatForm.onsubmit = (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            sendMessage(text);
+        };
+
+        async function sendMessage(text) {
+            // Add user bubble
+            appendMessage('user', text);
+            chatInput.value = '';
+
+            const aiBubbleId = 'ai-' + Date.now();
+            const aiBubble = appendMessage('ai', '', aiBubbleId);
+
+            try {
+                const formData = new FormData();
+                formData.append('question', text);
+
+                const res = await fetch('/api/query', { method: 'POST', body: formData });
+                if (!res.ok) throw new Error("Connection failed");
+
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                let fullText = "";
+                const textContainer = aiBubble.querySelector('.content');
+
+                // Hide the typing indicator once data arrives
+                const typing = aiBubble.querySelector('.typing-indicator');
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const event = JSON.parse(line.substring(6));
+                                if (event.type === 'text') {
+                                    if (typing) typing.remove();
+                                    fullText += event.content;
+                                    textContainer.innerText = fullText;
+                                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                                } else if (event.type === 'final') {
+                                    renderSources(aiBubbleId, event.content.sources);
+                                } else if (event.type === 'error') {
+                                    throw new Error(event.content);
+                                }
+                            } catch (e) { console.error(e); }
+                        }
+                    }
+                }
+            } catch (err) {
+                const textContainer = aiBubble.querySelector('.content');
+                textContainer.innerHTML = `<span class="text-red-500 font-bold">Error: ${err.message}</span>`;
+            }
+        }
+
+        function appendMessage(role, text, id) {
+            // Remove welcome screen if it exists
+            const welcome = document.querySelector('.py-20');
+            if (welcome) welcome.remove();
+
+            const msg = document.createElement('div');
+            msg.id = id || '';
+            msg.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`;
+
+            const inner = `
+                <div class="flex gap-4 max-w-[85%] ${role === 'user' ? 'flex-row-reverse' : ''}">
+                    <div class="w-10 h-10 rounded-2xl flex-shrink-0 flex items-center justify-center shadow-lg ${role === 'user' ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900' : 'bg-primary text-white'}">
+                        <span class="material-icons-round text-lg">${role === 'user' ? 'person' : 'auto_awesome'}</span>
+                    </div>
+                    <div class="glass p-5 px-6 rounded-3xl ${role === 'user' ? 'user-bubble !bg-primary text-white border-primary border-opacity-20' : 'ai-bubble'}">
+                        <div class="text-[8px] font-black uppercase tracking-[0.2em] mb-1 opacity-50">${role === 'user' ? 'Strategy Lead' : 'AnalystSage AI'}</div>
+                        <div class="content font-medium leading-relaxed whitespace-pre-wrap">${text}</div>
+                        ${role === 'ai' && !text ? `
+                            <div class="typing-indicator flex gap-1 mt-2">
+                                <div class="w-1.5 h-1.5 bg-primary/40 rounded-full typing-dot"></div>
+                                <div class="w-1.5 h-1.5 bg-primary/40 rounded-full typing-dot" style="animation-delay: 0.2s"></div>
+                                <div class="w-1.5 h-1.5 bg-primary/40 rounded-full typing-dot" style="animation-delay: 0.4s"></div>
+                            </div>
+                        ` : ''}
+                        <div class="sources-container mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 hidden pt-4 border-t border-white/20"></div>
+                    </div>
+                </div>
+            `;
+            msg.innerHTML = inner;
+            chatWindow.appendChild(msg);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            return msg;
+        }
+
+        function renderSources(msgId, sources) {
+            const msg = document.getElementById(msgId);
+            if (!msg || !sources || sources.length === 0) return;
+
+            const container = msg.querySelector('.sources-container');
+            container.classList.remove('hidden');
+            container.innerHTML = sources.map(s => `
+                <div class="p-3 bg-white/10 border border-white/20 rounded-xl hover:bg-white/20 transition-all cursor-default">
+                    <p class="text-[7px] font-black text-primary dark:text-accent-cyan uppercase tracking-widest mb-1">Source</p>
+                    <p class="text-[9px] font-bold text-slate-800 dark:text-slate-200 line-clamp-1">${s.source}</p>
+                    <p class="text-[7px] text-slate-500 font-bold mt-1">Pg: ${s.pages.join(', ')}</p>
+                </div>
+            `).join('');
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>

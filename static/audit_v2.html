@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnalystSage AI - Funky Contract Intelligence</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8B5CF6", // Vibrant Purple
+                        "background-light": "#F5F3FF",
+                        "background-dark": "#0B0E14",
+                        accent: {
+                            pink: "#EC4899",
+                            cyan: "#06B6D4",
+                            yellow: "#FBBF24"
+                        }
+                    },
+                    fontFamily: {
+                        display: ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1.5rem",
+                        "2xl": "2rem",
+                        "3xl": "3rem",
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, filter: 'brightness(1)' },
+                            '50%': { opacity: 0.8, filter: 'brightness(1.5)' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .retro-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(139, 92, 246, 0.3);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden transition-colors duration-500 overflow-y-auto">
+    <div
+        class="fixed inset-0 -z-10 bg-gradient-to-br from-purple-100 via-pink-50 to-cyan-100 dark:from-indigo-950 dark:via-purple-950 dark:to-slate-950 animate-gradient-x">
+    </div>
+    <header class="relative px-8 py-6 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="flex items-center gap-3">
+            <div
+                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 rotate-3 transition-transform hover:rotate-0">
+                <span class="material-icons-round text-white text-3xl">auto_awesome</span>
+            </div>
+            <div>
+                <h1
+                    class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase transition-colors">
+                    AnalystSage <span class="text-primary font-display lowercase tracking-tighter">AI</span></h1>
+                <p class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em]">Semantic
+                    Intelligence</p>
+            </div>
+        </div>
+
+        <nav
+            class="hidden md:flex glass px-5 py-2.5 rounded-full items-center gap-4 shadow-xl border border-white/20 transition-all">
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                onclick="window.location.href='/chat_v2.html'" title="Ask Questions">
+                <span class="material-icons-round text-sm">forum</span>
+            </button>
+            <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+            <button
+                class="p-2.5 bg-primary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 shadow-lg shadow-primary/30"
+                onclick="window.location.href='/audit_v2.html'" title="Audit Contracts">
+                <span class="material-icons-round text-sm">gavel</span>
+            </button>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                onclick="window.location.href='/library_v2.html'" title="Document Library">
+                <span class="material-icons-round text-sm">folder_special</span>
+            </button>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                title="Settings">
+                <span class="material-icons-round text-sm">settings</span>
+            </button>
+            <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-accent-yellow transition-colors flex items-center justify-center"
+                onclick="document.documentElement.classList.toggle('dark')">
+                <span class="material-icons-round text-sm dark:hidden">dark_mode</span>
+                <span class="material-icons-round text-sm hidden dark:block">light_mode</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="relative max-w-7xl mx-auto px-6 pt-4 pb-32">
+        <div class="grid lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
+            <!-- Golden Agreement Section -->
+            <section class="space-y-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-icons-round text-primary text-3xl">verified_user</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white tracking-tighter">Golden Agreement
+                    </h2>
+                </div>
+                <div
+                    class="glass p-6 rounded-3xl retro-shadow-purple border-primary/20 hover:border-primary/50 transition-all glow-border-purple text-center lg:text-left group">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Primary
+                            Source</span>
+                        <div class="flex gap-2">
+                        </div>
+                    </div>
+
+                    <div id="golden-drop-zone"
+                        class="border-2 border-dashed border-primary/30 rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:bg-primary/5 transition-colors cursor-pointer group-hover:border-primary">
+                        <div
+                            class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary animate-float">
+                            <span class="material-icons-round text-3xl">verified</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold text-slate-800 dark:text-white" id="golden-filename">
+                                Drop Golden Agreement Here</p>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-tight mt-1">PDF, DOCX UP
+                                TO 200MB</p>
+                        </div>
+                        <input type="file" id="golden-file-input" class="hidden">
+                    </div>
+
+                    <div class="mt-6 space-y-3">
+                        <div class="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary w-0 shadow-[0_0_10px_rgba(139,92,246,0.5)] transition-all duration-500"
+                                id="golden-sync-bar"></div>
+                        </div>
+                        <p class="text-[10px] font-black text-slate-500 uppercase text-center tracking-widest"
+                            id="golden-sync-text">Waiting for Reference Source</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Action -->
+            <div class="flex flex-col items-center justify-center pt-24 lg:pt-32 px-4">
+                <button id="audit-process-btn"
+                    class="group relative w-24 h-24 lg:w-32 lg:h-32 bg-slate-900 dark:bg-white rounded-full flex flex-col items-center justify-center shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:scale-110 active:scale-95 transition-all animate-pulse-glow z-20 border-8 border-background-light dark:border-background-dark">
+                    <span
+                        class="material-icons-round text-white dark:text-slate-900 text-3xl lg:text-4xl group-hover:rotate-180 transition-transform duration-700">sync_alt</span>
+                    <span
+                        class="text-[8px] lg:text-[10px] font-black text-white dark:text-slate-900 uppercase mt-2 tracking-tighter">Compare</span>
+                </button>
+                <div
+                    class="hidden lg:block w-px h-64 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-700 to-transparent -mt-16 -z-10">
+                </div>
+            </div>
+
+            <!-- Renewal Draft Section -->
+            <section class="space-y-6">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="material-icons-round text-accent-cyan text-3xl">history_edu</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white tracking-tighter">Contract Draft
+                    </h2>
+                </div>
+                <div
+                    class="glass p-6 rounded-3xl retro-shadow-cyan border-accent-cyan/20 hover:border-accent-cyan/50 transition-all glow-border-cyan group">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-[10px] font-black text-accent-cyan uppercase tracking-[0.2em]">Target
+                            Document</span>
+                        <span
+                            class="px-2 py-0.5 rounded bg-accent-cyan/10 text-accent-cyan text-[10px] font-black uppercase"
+                            id="draft-status">Pending Scan</span>
+                    </div>
+                    <div id="drop-zone"
+                        class="border-2 border-dashed border-accent-cyan/30 rounded-2xl p-8 flex flex-col items-center justify-center gap-4 hover:bg-accent-cyan/5 transition-colors cursor-pointer group-hover:border-accent-cyan">
+                        <div
+                            class="w-16 h-16 bg-accent-cyan/10 rounded-full flex items-center justify-center text-accent-cyan animate-float">
+                            <span class="material-icons-round text-3xl">upload_file</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold text-slate-800 dark:text-white" id="draft-filename">Drop Contract Here
+                            </p>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-tight mt-1">PDF, DOCX up
+                                to 200MB</p>
+                        </div>
+                        <input type="file" id="audit-file-input" class="hidden">
+                    </div>
+
+                    <div class="mt-6 space-y-3">
+                        <div class="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-accent-cyan w-0 shadow-[0_0_10px_rgba(6,182,212,0.5)] transition-all duration-500"
+                                id="draft-sync-bar"></div>
+                        </div>
+                        <p class="text-[10px] font-black text-slate-500 uppercase text-center tracking-widest"
+                            id="draft-sync-text">Waiting for Reference Source</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Compliance Intelligence Dashboard -->
+        <div id="audit-results"
+            class="mt-12 glass rounded-[3rem] p-8 retro-shadow-purple border-white/30 hidden animate-in slide-in-from-bottom-10 duration-700">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                <div>
+                    <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Compliance
+                        Intelligence</h3>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mt-1">Deviation Matrix
+                        &amp; Variance Analysis</p>
+                </div>
+                <div class="flex flex-wrap gap-4">
+                    <!-- AUDIT PASS/FAIL INDICATOR -->
+                    <div id="status-indicator"
+                        class="px-6 py-3 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center gap-3 transition-all duration-500">
+                        <div id="status-icon-container"
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-700">
+                            <span id="status-icon" class="material-icons-round text-slate-400">hourglass_empty</span>
+                        </div>
+                        <div>
+                            <p class="text-[8px] font-black uppercase text-slate-500 tracking-widest">Audit Status</p>
+                            <p class="text-xl font-extrabold tracking-tighter" id="status-text">PENDING</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="px-6 py-3 bg-accent-yellow/10 rounded-2xl border border-accent-yellow/20 flex items-center gap-3">
+                        <span class="material-icons-round text-accent-yellow">warning</span>
+                        <div>
+                            <p class="text-[8px] font-black uppercase text-accent-yellow tracking-widest">Risks Detected
+                            </p>
+                            <p class="text-xl font-extrabold" id="risk-count">--</p>
+                        </div>
+                    </div>
+                    <div
+                        class="px-6 py-3 bg-accent-cyan/10 rounded-2xl border border-accent-cyan/20 flex items-center gap-3">
+                        <span class="material-icons-round text-accent-cyan">verified</span>
+                        <div>
+                            <p class="text-[8px] font-black uppercase text-accent-cyan tracking-widest">Match Score</p>
+                            <p class="text-xl font-extrabold" id="match-score">--%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deviation Insights Feed -->
+            <div
+                class="glass bg-white/20 dark:bg-black/20 p-8 rounded-[2.5rem] border-dashed border-2 border-slate-300 dark:border-slate-700">
+                <h4
+                    class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-6 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    Agreement Deviation Insights
+                </h4>
+                <div id="audit-log-container"
+                    class="grid md:grid-cols-2 gap-x-12 gap-y-6 max-h-[600px] overflow-y-auto custom-scrollbar pr-4 text-sm">
+                    <div class="flex gap-3 text-xs opacity-50 italic col-span-2">
+                        Waiting for compliance scan results...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Report Content -->
+            <div id="full-audit-text"
+                class="mt-8 pt-8 border-t border-white/20 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 font-medium">
+                <!-- Textual report will be injected here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Nav Removed -->
+    <footer
+        class="fixed bottom-4 left-8 text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 hidden xl:block">
+        AnalystSage AI Studio
+    </footer>
+
+    <script>
+        // --- State Management ---
+        let currentGoldenSource = null;
+        let auditFile = null;
+
+        // --- Golden Agreement Logic ---
+        const goldenDropZone = document.getElementById('golden-drop-zone');
+        const goldenFileInput = document.getElementById('golden-file-input');
+        const goldenSyncBar = document.getElementById('golden-sync-bar');
+        const goldenSyncText = document.getElementById('golden-sync-text');
+
+        goldenDropZone.onclick = () => goldenFileInput.click();
+
+        goldenFileInput.onchange = async (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                document.getElementById('golden-filename').innerText = file.name;
+
+                // Visual sync animation
+                goldenSyncBar.style.width = '30%';
+                goldenSyncText.innerText = 'Ingesting Standard into Semantic Core...';
+
+                // Real Upload
+                const formData = new FormData();
+                formData.append('files', file);
+                try {
+                    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                    const data = await res.json();
+                    if (data.results[0].status === 'success') {
+                        currentGoldenSource = file.name;
+                        goldenSyncBar.style.width = '100%';
+                        goldenSyncText.innerText = 'Reference Metadata Synced 100%';
+                    } else {
+                        throw new Error(data.results[0].message);
+                    }
+                } catch (err) {
+                    goldenSyncText.innerText = 'Ingestion Error: ' + err.message;
+                    goldenSyncBar.classList.replace('bg-primary', 'bg-red-500');
+                }
+            }
+        };
+
+
+        // --- Renewal Draft Logic ---
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('audit-file-input');
+
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            if (e.target.files.length > 0) {
+                auditFile = e.target.files[0];
+                document.getElementById('draft-filename').innerText = auditFile.name;
+                document.getElementById('draft-status').innerText = 'UPLOADED';
+
+                const draftSyncBar = document.getElementById('draft-sync-bar');
+                const draftSyncText = document.getElementById('draft-sync-text');
+                draftSyncBar.style.width = '100%';
+                draftSyncText.innerText = 'Tactical Asset Synced 100%';
+            }
+        };
+
+        // --- Audit Processing Logic ---
+        const auditBtn = document.getElementById('audit-process-btn');
+        auditBtn.onclick = async () => {
+            if (!currentGoldenSource) {
+                alert("Tactical Error: No Golden Agreement source detected.");
+                return;
+            }
+            if (!auditFile) {
+                alert("Tactical Error: No Renewal Draft detected.");
+                return;
+            }
+
+            auditBtn.classList.add('animate-spin');
+            const draftSyncText = document.getElementById('draft-sync-text');
+            if (draftSyncText) draftSyncText.innerText = 'Synthesizing deviation matrix...';
+
+            const formData = new FormData();
+            formData.append('golden_source', currentGoldenSource);
+            formData.append('audit_file', auditFile);
+
+            try {
+                const res = await fetch('/api/audit', { method: 'POST', body: formData });
+                const data = await res.json();
+                const text = data.result.answer;
+
+                // Show extracted audit results
+                document.getElementById('audit-results').classList.remove('hidden');
+
+                const scoreTags = ['COMPLIANCE', 'LIABILITY', 'IP', 'FINANCIAL', 'RISK', 'COMMERCIAL', 'LEGAL'];
+                const identifiedScores = [];
+
+                scoreTags.forEach(tag => {
+                    const segmentMatch = text.match(new RegExp(`\\[${tag}_SCORE\\]:?([\\s\\S]*?)(?=\\[|$)`));
+                    if (segmentMatch) {
+                        const scoreMatch = segmentMatch[1].match(/(\d+)\s*%/);
+                        const val = scoreMatch ? parseInt(scoreMatch[1]) : null;
+                        if (val !== null) {
+                            identifiedScores.push({
+                                name: tag.charAt(0) + tag.slice(1).toLowerCase() + ' Intelligence',
+                                value: val,
+                                raw: segmentMatch[1].trim()
+                            });
+                        }
+                    }
+                });
+
+                const topScores = identifiedScores.slice(0, 1);
+                const complianceVal = topScores[0]?.value || 0;
+
+                // Update Pass/Fail UI
+                const statusBox = document.getElementById('status-indicator');
+                const statusIconContainer = document.getElementById('status-icon-container');
+                const statusIcon = document.getElementById('status-icon');
+                const statusText = document.getElementById('status-text');
+
+                if (complianceVal >= 100) {
+                    statusBox.className = 'px-6 py-3 bg-accent-cyan/10 rounded-2xl border border-accent-cyan/30 flex items-center gap-3 transition-all duration-500 scale-105 shadow-lg shadow-accent-cyan/20';
+                    statusIconContainer.className = 'w-10 h-10 rounded-full flex items-center justify-center bg-accent-cyan text-white';
+                    statusIcon.innerText = 'check_circle';
+                    statusText.innerText = 'PASS';
+                    statusText.className = 'text-xl font-extrabold tracking-tighter text-accent-cyan';
+                } else {
+                    statusBox.className = 'px-6 py-3 bg-accent-pink/10 rounded-2xl border border-accent-pink/30 flex items-center gap-3 transition-all duration-500 pulse-glow';
+                    statusIconContainer.className = 'w-10 h-10 rounded-full flex items-center justify-center bg-accent-pink text-white';
+                    statusIcon.innerText = 'cancel';
+                    statusText.innerText = 'FAIL';
+                    statusText.className = 'text-xl font-extrabold tracking-tighter text-accent-pink';
+                }
+
+                // --- Dynamic Insights Extraction ---
+                const logs = [];
+
+                const extractSectionItems = (header) => {
+                    const match = text.match(new RegExp(`\\[${header}\\]([\\s\\S]*?)(?=\\[|$)`));
+                    return match ? match[1].trim().split('\n').filter(l => l.trim()) : [];
+                };
+
+                const criticalRisks = extractSectionItems('CRITICAL_DEVIATIONS');
+                const moderateRisks = extractSectionItems('MODERATE_DEVIATIONS');
+                const strengths = extractSectionItems('STRENGTHS');
+
+                criticalRisks.forEach(l => logs.push({ type: '!', text: l.replace(/^[-•\d.]+\s*/, '') }));
+                moderateRisks.forEach(l => logs.push({ type: '?', text: l.replace(/^[-•\d.]+\s*/, '') }));
+                strengths.forEach(l => logs.push({ type: '✓', text: l.replace(/^[-•\d.]+\s*/, '') }));
+
+                if (logs.length < 5) {
+                    topScores.forEach(s => {
+                        const descriptive = s.raw.replace(/.*?(\d+)\s*%.*?(\.|\n)/, '').trim();
+                        if (descriptive.length > 20) logs.push({ type: 'i', text: descriptive.split('.')[0] + '.' });
+                    });
+                }
+
+                document.getElementById('risk-count').innerText = (criticalRisks.length < 10 ? '0' : '') + criticalRisks.length;
+                document.getElementById('match-score').innerText = (topScores[0]?.value || identifiedScores[0]?.value || 0) + '%';
+
+                const filteredLogs = logs.filter(log => log.text.trim() && log.text.trim() !== ':');
+
+                const logContainer = document.getElementById('audit-log-container');
+                logContainer.innerHTML = filteredLogs.slice(0, 8).map(log => `
+                    <div class="flex gap-3 text-xs animate-in slide-in-from-right duration-500">
+                        <span class="${log.type === '!' ? 'text-accent-pink' : (log.type === '✓' ? 'text-accent-cyan' : (log.type === '?' ? 'text-accent-yellow' : 'text-slate-400'))} font-black">[${log.type}]</span>
+                        <p class="text-slate-700 dark:text-slate-300 font-medium">${log.text}</p>
+                    </div>
+                `).join('');
+
+                // 4. Strategic Narrative Report (Replacing JSON)
+                let reportHtml = `<div class="p-8 space-y-8 text-slate-800 dark:text-slate-200">`;
+
+                const summaryMatch = text.match(/\[EXECUTIVE_SUMMARY\]:?([\s\S]*?)(?=\[|$)/);
+                if (summaryMatch) {
+                    reportHtml += `
+                        <section class="space-y-3">
+                            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-primary">Strategic Executive Summary</h3>
+                            <p class="text-sm leading-relaxed font-medium bg-white/50 dark:bg-black/20 p-4 rounded-2xl border border-white/20">${summaryMatch[1].trim()}</p>
+                        </section>
+                    `;
+                }
+
+                if (strengths.length > 0) {
+                    reportHtml += `
+                        <section class="space-y-3">
+                            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-accent-cyan">Negotiated Strengths</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                ${strengths.map(s => `
+                                    <div class="p-3 bg-accent-cyan/5 rounded-xl border border-accent-cyan/10 flex gap-3">
+                                        <span class="material-icons-round text-accent-cyan text-sm">verified</span>
+                                        <p class="text-xs font-bold leading-tight">${s.replace(/^[:\s-]+/, '')}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+                    `;
+                }
+
+                reportHtml += `<section class="space-y-3">
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Intelligence Metrics</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        ${topScores.map(s => `
+                            <div class="glass p-4 rounded-2xl text-center">
+                                <div class="text-lg font-black text-primary">${s.value}%</div>
+                                <div class="text-[9px] uppercase font-black tracking-tighter opacity-60">${s.name}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section></div>`;
+
+                document.getElementById('full-audit-text').innerHTML = reportHtml;
+
+                const draftSyncText = document.getElementById('draft-sync-text');
+                if (draftSyncText) draftSyncText.innerText = 'Tactical variance matrix analyzed. Strategic discrepancies mapped.';
+
+            } catch (err) {
+                alert("Audit Failed: " + err.message);
+            } finally {
+                auditBtn.classList.remove('animate-spin');
+            }
+        };
+
+        function updateGauge(barId, labelId, value) {
+            const bar = document.getElementById(barId);
+            const label = document.getElementById(labelId);
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = value + '%';
+                label.innerText = value + '%';
+            }, 100);
+        }
+    </script>
+</body>
+
+</html>

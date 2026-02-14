@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AnalystSage AI - Document Library</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8B5CF6", // Vibrant Purple
+                        "background-light": "#F5F3FF",
+                        "background-dark": "#0B0E14",
+                        accent: {
+                            pink: "#EC4899",
+                            cyan: "#06B6D4",
+                            yellow: "#FBBF24"
+                        }
+                    },
+                    fontFamily: {
+                        display: ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1.5rem",
+                        "2xl": "2rem",
+                        "3xl": "3rem",
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(2deg)' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .retro-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(139, 92, 246, 0.3);
+        }
+
+        .retro-shadow-pink {
+            box-shadow: 8px 8px 0px 0px rgba(236, 72, 153, 0.3);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden transition-colors duration-500 overflow-y-auto">
+    <div
+        class="fixed inset-0 -z-10 bg-gradient-to-br from-purple-100 via-pink-50 to-cyan-100 dark:from-indigo-950 dark:via-purple-950 dark:to-slate-950 animate-gradient-x">
+    </div>
+
+    <header class="relative px-8 py-6 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="flex items-center gap-3">
+            <div
+                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 rotate-3 transition-transform hover:rotate-0">
+                <span class="material-icons-round text-white text-3xl">auto_awesome</span>
+            </div>
+            <div>
+                <h1
+                    class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase transition-colors">
+                    AnalystSage <span class="text-primary font-display lowercase tracking-tighter">AI</span></h1>
+                <p class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em]">Semantic
+                    Intelligence</p>
+            </div>
+        </div>
+
+        <nav
+            class="hidden md:flex glass px-5 py-2.5 rounded-full items-center gap-4 shadow-xl border border-white/20 transition-all">
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                onclick="window.location.href='/chat_v2.html'" title="Ask Questions">
+                <span class="material-icons-round text-sm">forum</span>
+            </button>
+            <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                onclick="window.location.href='/audit_v2.html'" title="Audit Contracts">
+                <span class="material-icons-round text-sm">gavel</span>
+            </button>
+            <button
+                class="p-2.5 bg-primary text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 shadow-lg shadow-primary/30"
+                onclick="window.location.href='/library_v2.html'" title="Document Library">
+                <span class="material-icons-round text-sm">folder_special</span>
+            </button>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center justify-center"
+                title="Settings">
+                <span class="material-icons-round text-sm">settings</span>
+            </button>
+            <div class="w-px h-6 bg-slate-300 dark:bg-slate-700 opacity-50"></div>
+            <button
+                class="p-2.5 text-slate-600 dark:text-slate-400 hover:text-accent-yellow transition-colors flex items-center justify-center"
+                onclick="document.documentElement.classList.toggle('dark')">
+                <span class="material-icons-round text-sm dark:hidden">dark_mode</span>
+                <span class="material-icons-round text-sm hidden dark:block">light_mode</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="relative max-w-7xl mx-auto px-6 pt-4 pb-32">
+        <!-- Dashboard Header -->
+        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+            <div class="space-y-2">
+                <h2 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tighter">Document <span
+                        class="text-primary">Library</span></h2>
+                <p class="text-xs font-black text-slate-500 uppercase tracking-[0.4em]">Autonomous Knowledge Repository
+                </p>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="glass px-6 py-3 rounded-2xl flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Total Sources</p>
+                        <p class="text-xl font-extrabold text-primary" id="total-sources">--</p>
+                    </div>
+                    <div class="w-px h-8 bg-slate-300 dark:bg-slate-700"></div>
+                    <div class="text-right">
+                        <p class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Semantic Chunks</p>
+                        <p class="text-xl font-extrabold text-accent-cyan" id="total-chunks">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+            <div class="relative flex-1 group">
+                <span
+                    class="material-icons-round absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                <input type="text" id="library-search" placeholder="Search knowledge base..."
+                    class="w-full bg-white/50 dark:bg-black/30 border-2 border-white/20 rounded-2xl py-4 pl-12 pr-6 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all font-bold text-sm">
+            </div>
+            <button onclick="document.getElementById('library-upload').click()"
+                class="px-8 py-4 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20">
+                <span class="material-icons-round">cloud_upload</span>
+                Ingest New Intel
+            </button>
+            <input type="file" id="library-upload" class="hidden" multiple onchange="handleUpload(this)">
+            <button onclick="clearLibrary()"
+                class="px-6 py-4 glass text-accent-pink rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-accent-pink/5 transition-all border-accent-pink/20 hover:border-accent-pink/50">
+                <span class="material-icons-round">auto_delete</span>
+                Clear Base
+            </button>
+        </div>
+
+        <!-- Library Grid -->
+        <div id="library-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Shimmer items -->
+            <div class="glass p-6 rounded-[2rem] animate-pulse h-48 border-white/20"></div>
+            <div class="glass p-6 rounded-[2rem] animate-pulse h-48 border-white/20"></div>
+            <div class="glass p-6 rounded-[2rem] animate-pulse h-48 border-white/20"></div>
+        </div>
+    </main>
+
+    <footer class="fixed bottom-4 left-8 text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
+        AnalystSage AI Intelligence Repository
+    </footer>
+
+    <!-- Templates -->
+    <template id="document-card-template">
+        <div
+            class="glass p-6 rounded-[2.5rem] border-white/20 hover:border-primary/40 transition-all group hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10 relative overflow-hidden">
+            <div
+                class="absolute -top-12 -right-12 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/20 transition-all">
+            </div>
+
+            <div class="flex justify-between items-start mb-6">
+                <div
+                    class="w-12 h-12 bg-white/50 dark:bg-black/20 rounded-2xl flex items-center justify-center text-primary shadow-sm border border-white/40">
+                    <span class="material-icons-round text-2xl">description</span>
+                </div>
+                <div
+                    class="px-3 py-1 bg-accent-cyan/10 text-accent-cyan rounded-full text-[10px] font-black tracking-widest uppercase">
+                    Synced
+                </div>
+            </div>
+
+            <div class="space-y-1 mb-6">
+                <h3 class="font-bold text-slate-800 dark:text-white truncate pr-8 doc-name" title=""></h3>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest doc-type">PDF Document</p>
+            </div>
+
+            <div class="flex justify-between items-center pt-4 border-t border-white/20">
+                <div class="flex -space-x-2">
+                    <div
+                        class="w-6 h-6 rounded-full bg-primary/20 border-2 border-white dark:border-slate-800 flex items-center justify-center">
+                        <span class="material-icons-round text-[10px] text-primary">psychology</span>
+                    </div>
+                </div>
+                <button
+                    class="delete-btn p-2 hover:bg-accent-pink/10 text-slate-400 hover:text-accent-pink rounded-xl transition-all">
+                    <span class="material-icons-round text-sm">delete_outline</span>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        let allSources = [];
+
+        async function fetchLibrary() {
+            try {
+                const res = await fetch('/api/stats');
+                const stats = await res.json();
+
+                document.getElementById('total-sources').innerText = stats.total_sources || 0;
+                document.getElementById('total-chunks').innerText = stats.total_chunks || 0;
+
+                allSources = stats.sources || [];
+                renderGrid(allSources);
+            } catch (err) {
+                console.error("Failed to fetch library stats:", err);
+            }
+        }
+
+        function renderGrid(sources) {
+            const grid = document.getElementById('library-grid');
+            const template = document.getElementById('document-card-template');
+            grid.innerHTML = '';
+
+            if (sources.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-20 flex flex-col items-center justify-center text-slate-400 opacity-50">
+                        <span class="material-icons-round text-6xl mb-4">folder_off</span>
+                        <p class="font-black uppercase tracking-widest text-sm">Knowledge Base Empty</p>
+                    </div>
+                `;
+                return;
+            }
+
+            sources.forEach(source => {
+                const card = template.content.cloneNode(true);
+                const nameEl = card.querySelector('.doc-name');
+                const typeEl = card.querySelector('.doc-type');
+                const deleteBtn = card.querySelector('.delete-btn');
+
+                nameEl.innerText = source;
+                nameEl.title = source;
+
+                const ext = source.split('.').pop().toUpperCase();
+                typeEl.innerText = `${ext} Document`;
+
+                deleteBtn.onclick = () => deleteSource(source);
+
+                grid.appendChild(card);
+            });
+        }
+
+        async function deleteSource(name) {
+            if (!confirm(`Confirm deletion of ${name}? This action cannot be undone.`)) return;
+
+            try {
+                const res = await fetch(`/api/sources/${encodeURIComponent(name)}`, { method: 'DELETE' });
+                if (res.ok) fetchLibrary();
+            } catch (err) {
+                alert("Tactical Error during deletion: " + err.message);
+            }
+        }
+
+        async function clearLibrary() {
+            if (!confirm(`CRITICAL ACTION: Wipe the entire knowledge base? This will clear all semantic intelligence.`)) return;
+
+            try {
+                const res = await fetch('/api/clear', { method: 'POST' });
+                if (res.ok) fetchLibrary();
+            } catch (err) {
+                alert("Tactical Error during wipe: " + err.message);
+            }
+        }
+
+        async function handleUpload(input) {
+            if (!input.files.length) return;
+
+            const formData = new FormData();
+            for (let file of input.files) {
+                formData.append('files', file);
+            }
+
+            const uploadBtn = input.previousElementSibling;
+            const originalText = uploadBtn.innerHTML;
+            uploadBtn.innerHTML = '<span class="material-icons-round animate-spin">sync</span> Processing...';
+            uploadBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                fetchLibrary();
+            } catch (err) {
+                alert("Ingestion Error: " + err.message);
+            } finally {
+                uploadBtn.innerHTML = originalText;
+                uploadBtn.disabled = false;
+                input.value = '';
+            }
+        }
+
+        // Search Filter
+        document.getElementById('library-search').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allSources.filter(s => s.toLowerCase().includes(query));
+            renderGrid(filtered);
+        });
+
+        // Initialize
+        fetchLibrary();
+    </script>
+</body>
+
+</html>
