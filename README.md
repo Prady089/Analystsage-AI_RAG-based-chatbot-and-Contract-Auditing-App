@@ -122,5 +122,5 @@ AnalystSage AI/
 
 ---
 
-**Built with ❤️ by Pradeep Kumar**
+**Built by Pradeep Kumar Ramadoss**
 **Enhanced for Semantic Intelligence.**
